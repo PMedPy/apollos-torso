@@ -4,7 +4,7 @@
 |---|---|
 | **Projekt** | ApollosTorso — übungszentrierte Fitness-Tracking-App |
 | **Repo / URL** | `apollos-torso` |
-| **Version** | 1.4 (Baseline) |
+| **Version** | 1.5 (Baseline) |
 | **Stand** | 23.11.2026 |
 | **Auftraggeber, Orchestrierung, User-Tests** | Paul Medebach |
 | **Implementierung** | Claude |
@@ -181,7 +181,7 @@ Einstellungen { sprache, theme, deloadFaktor, tau, fokusStärken, standardWechse
 | UE-03 | Jede Übung ist als **Gewichtsübung** oder **Körpergewichtsübung** markiert. Die Art hängt an der Übung, nicht am einzelnen Satz: Dips mit Gürtel bleiben eine Körpergewichtsübung. | P1 |
 | UE-04 | Jede Übung hat Haupt- und Neben-Tags aus den 12 Muskelgruppen (Kapitel 5). | P1 |
 | UE-05 | **Übungskatalog** mit ca. 50 häufigen Übungen. Pro Übung: deutscher und englischer Name, **Aliase** (z.B. „Pushups“, „Push-ups“ → Liegestütze), Typ, Gewicht/Körpergewicht, Faktor f, Haupt- und Neben-Tags. | P1 |
-| UE-06 | Die Werte für f werden mit Quellen recherchiert und im Repo dokumentiert. | P1 |
+| UE-06 | Die Werte für f werden mit Quellen recherchiert und im Repo dokumentiert. Bis dahin stehen vorläufige Werte im Katalog (`src/data/catalog.ts`); sie werden erst ab P2 für Berechnungen genutzt. | P1 / P2 |
 | UE-07 | **Vorschläge beim Anlegen:** unscharfe Suche über Namen und Aliase in beiden Sprachen. Treffer am Wortanfang werden bevorzugt, Tippfehler toleriert. Wird ein Vorschlag gewählt, sind alle Felder vorausgefüllt. | P1 |
 | UE-08 | Katalog-Übungen werden über ihre `katalogId` angezeigt und wechseln mit der Sprache. Eigene Übungen behalten den eingetippten Namen. | P1 |
 | UE-09 | Übungen können bearbeitet und archiviert werden. Archivierte Übungen bleiben in der Statistik erhalten. | P2 |
@@ -209,6 +209,7 @@ Einstellungen { sprache, theme, deloadFaktor, tau, fokusStärken, standardWechse
 | TR-11a | **Pausenansicht** (Skizze C): Pausenuhr in der Mitte. Zwischen zwei Übungen ist unten die nächste Übung **geladen** (änderbar), ein Tap auf „Abfeuern“ startet ihren ersten Satz. | P1 |
 | TR-12 | **Trainingsansicht per kräftigem Ziehen** nach oben/unten: zeigt das ganze Training (bisherige Übungen, Pausen, bei Template auch kommende) zum Auswählen. Die Seite wird ab P1 als Stapel aus Ebenen aufgebaut, damit die Geste später ohne Umbau dazukommt. | später (P4/P5) |
 | TR-13 | **Aufwärmsätze** werden im Eingabeblatt mit einem kleinen **Raketensymbol** markiert. Sie zählen nicht für Bestwerte und nicht für „Sätze pro Muskelgruppe“, erscheinen aber im Verlauf und in der Zeitstatistik. | P1 |
+| TR-14 | **Trainings löschen:** ein abgeschlossenes Training im Verlauf (mit Sicherheitsabfrage) und ein laufendes Training beim Beenden („Training verwerfen“), z.B. für Testtrainings. | P1 |
 
 ### 6.4 Pausen & Zeit-Tracking (PZ)
 
@@ -289,16 +290,9 @@ Einstellungen { sprache, theme, deloadFaktor, tau, fokusStärken, standardWechse
 | EI-07 | Datenbank zurücksetzen (mit Sicherheitsabfrage und Export-Angebot vorher). | P1 |
 | EI-08 | **Gewichts-Progressionsempfehlung** (erweiterte Option, standardmäßig aus): Die App schlägt vor, wann das Gewicht erhöht werden sollte. | später |
 
-### 6.10a Profile (PF) — vorübergehend
+### 6.10a Profile (PF) — gestrichen
 
-Für die Testphase können zwei Personen auf einem Gerät getrennt loggen. Das Feature wird später wieder entfernt.
-
-| ID | Anforderung | Phase |
-|---|---|---|
-| PF-01 | Beim Start wählt man eines von zwei Profilen: **Süßbär** oder **Ostnase**. Das zuletzt gewählte ist vorausgewählt. | P1 |
-| PF-02 | Jedes Profil hat eine **eigene Datenbank** auf dem Gerät (`apollos-torso-<profil>`), also getrennte Daten, Einstellungen, Statistiken und Exporte. Das Datenmodell bekommt dafür kein Benutzer-Feld. | P1 |
-| PF-03 | Profilwechsel über die Einstellungen, nicht während eines laufenden Trainings. | P1 |
-| PF-04 | **Entfernen:** Die Profilauswahl wird abgeschaltet, die App öffnet dann direkt ein festgelegtes Profil. Die Daten bleiben erhalten. | später |
+Am 25.11. gestrichen: Jede Person nutzt ein eigenes Handy, ein gemeinsames Gerät kommt nicht vor. Für gemeinsame Auswertungen werden Backups (EI-04) ausgetauscht. Die IDs PF-01 bis PF-04 werden nicht wiederverwendet.
 
 ### 6.11 Rilke & Easter Eggs (EE)
 
@@ -353,7 +347,7 @@ Die Formeln sind nach [`FORMELN.md`](FORMELN.md) ausgelagert, damit es nur eine 
 | Phase | Inhalt | Abnahmekriterium | Version |
 |---|---|---|---|
 | **P0 Fundament** | Repo, Grundgerüst (React/TS/Vite), PWA, Cloudflare-Deployment, vollständiges Datenmodell, i18n-Gerüst, Farbwerte, Darkmode, Test-Setup (Vitest, CI) | Die leere App lässt sich auf Android und iOS installieren und offline öffnen. | v0.0 |
-| **P1 Loggen im Gym (MVP)** | Profilwahl (PF), Onboarding mit Körpergewicht, Übungskatalog + Suche, eigene Übungen, freies Training, Schrotflinte, Start/Fertig pro Satz, Pausen (einfaches Dropdown, Timer/Stoppuhr), Zeit-Tracking, Bewertung, Trainingsverlauf, Export/Import, statische Menüleiste | Paul und seine Freundin nutzen die App im Gym statt Notizen. **Ab hier werden echte Daten gesammelt.** | v0.1 |
+| **P1 Loggen im Gym (MVP)** | Onboarding mit Körpergewicht, Übungskatalog + Suche, eigene Übungen, freies Training, Schrotflinte, Start/Fertig pro Satz, Pausen (einfaches Dropdown, Timer/Stoppuhr), Zeit-Tracking, Bewertung, Trainingsverlauf, Export/Import, statische Menüleiste | Paul und seine Freundin nutzen die App im Gym statt Notizen. **Ab hier werden echte Daten gesammelt.** | v0.1 |
 | **P2 Bestwerte & Templates** | e1RM, effektive Last, Allzeit- und aktueller Bestwert, nötige Wiederholungen, Deload-Slider, Satzpause pro Übung merken, Templates (aus Training, neu) | Bestwerte und Ziele werden im Training korrekt angezeigt. | v0.2 |
 | **P3 Belvedere** | Statistikseite mit Übungs-, Trainings- und Verlaufsebene, Zeitstatistik, Sätze pro Muskelgruppe, Top-Übungsmetrik, Ermüdungsfaktor mit Platzhaltern, Torso-Icon | Fortschritt ist über alle Ebenen nachvollziehbar. | v0.3 |
 | **P4 Design & Animation** | Bubble-Menüleiste, Bubble-Dropdowns mit Gravitation, körnige Flächen, Darkmode-Feinschliff, Rilke (Onboarding, Splash, Easter Egg), Icons | Die App fühlt sich so an wie in Kapitel 7 beschrieben. | v0.4 |
@@ -465,3 +459,4 @@ Cloudflare baut und deployt automatisch bei jedem Push. Lokal braucht man die Be
 | 1.2 | 23.11.2026 | Ins Repo übernommen (`docs/LASTENHEFT.md`). Anhang A nach `docs/FORMELN.md` ausgelagert. Glossar Code ↔ Lastenheft (3.1). Feld „Aufwärmsatz“ im Datenmodell ergänzt (Behandlung weiter offen, O-3). |
 | 1.3 | 23.11.2026 | Akzentfarben festgelegt: Standard `#8F473D`, Fokus-Modus `#1400F2` (DS-02, FO-02). |
 | 1.4 | 25.11.2026 | O-1 bis O-3 entschieden. Eingabeblatt mit Standardwerten Satz für Satz aus dem letzten Training, ohne Historie 8 Wdh / 50 kg (TR-04a–e), Layout der Trainingsseite (TR-11, TR-11a), Trainingsansicht später (TR-12), Aufwärmsätze (TR-13). Keine Gewichtsempfehlung, später optional (EI-08). Vorübergehende Profile Süßbär/Ostnase (PF-01–04). |
+| 1.5 | 25.11.2026 | Profile gestrichen, jede Person nutzt ihr eigenes Handy (6.10a). Trainings löschen ergänzt (TR-14). Faktoren f vorläufig bis P2 (UE-06). |

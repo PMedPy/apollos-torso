@@ -4,6 +4,19 @@ Format angelehnt an [Keep a Changelog](https://keepachangelog.com/de/1.1.0/). Ve
 
 ## [Unveröffentlicht]
 
+### Phase 1 – Loggen im Gym (erster Stand)
+
+- Onboarding beim ersten Start mit Sprache und Körpergewicht, iOS-Installationshinweis (KG-01, KG-02, KG-04)
+- Übungskatalog mit 53 Übungen, unscharfe Suche über Namen und Aliase in DE/EN, eigene Übungen anlegen (UE-01–05, UE-07, UE-08)
+- Training: Laden/Abfeuern, Start/Fertig pro Satz, Eingabeblatt mit Standardwerten Satz für Satz aus dem letzten Training (TR-03, TR-04a–e)
+- Pausenuhr mit Timer oder offener Stoppuhr, Ton/Vibration bei offener App, Satzpause pro Übung gemerkt (PZ-01–06)
+- Aufwärmsätze mit Raketensymbol (TR-13), Sätze bearbeiten und löschen (TR-10)
+- Laufendes Training übersteht Schließen und Neuladen der App (TR-09)
+- Bewertung 1–10 am Ende, leere Trainings werden verworfen (TR-08)
+- Trainings löschen: im Verlauf und beim Beenden als „Training verwerfen“ (TR-14)
+- Verlauf auf der Startseite mit Satzzeit, Satzpausen und Wechselzeit
+- Einstellungen: Körpergewicht, Gewichtsschritte, Export/Import als JSON, Daten löschen (EI-03, EI-04, EI-07)
+
 ### Phase 0 – Fundament
 
 - Grundgerüst mit React, TypeScript und Vite
