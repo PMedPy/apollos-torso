@@ -5,6 +5,8 @@ export type Page = 'home' | 'belvedere' | 'settings'
 
 interface Props {
   page: Page
+  /** Training läuft: „+“ öffnet es statt ein neues zu starten */
+  running: boolean
   onNavigate: (page: Page) => void
   onNewTraining: () => void
 }
@@ -13,7 +15,7 @@ interface Props {
  * Untere Menüleiste aus Kreisen (DS-04).
  * Phase 1: statisch. Das Verschmelzen benachbarter Kreise kommt in Phase 4.
  */
-export function BottomNav({ page, onNavigate, onNewTraining }: Props) {
+export function BottomNav({ page, running, onNavigate, onNewTraining }: Props) {
   const { t } = useTranslation()
   const items: { id: Page; label: string; icon: React.ReactNode }[] = [
     { id: 'home', label: t('nav.home'), icon: <HomeIcon /> },
@@ -37,8 +39,8 @@ export function BottomNav({ page, onNavigate, onNewTraining }: Props) {
       ))}
       <button
         type="button"
-        className="nav-bubble nav-plus"
-        aria-label={t('nav.newTraining')}
+        className={`nav-bubble nav-plus${running ? ' is-running' : ''}`}
+        aria-label={running ? t('nav.openTraining') : t('nav.newTraining')}
         onClick={onNewTraining}
       >
         <PlusIcon />

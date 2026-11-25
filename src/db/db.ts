@@ -39,4 +39,5 @@ export class ApollosDb extends Dexie {
   }
 }
 
-export const db = new ApollosDb()
+/** Name der lokalen Datenbank. */
+export const DB_NAME = 'apollos-torso'

@@ -4,7 +4,7 @@ import { registerSW } from 'virtual:pwa-register'
 import './i18n'
 import './styles/tokens.css'
 import './index.css'
-import App from './App.tsx'
+import Root from './App.tsx'
 
 // Service Worker: macht die App offline-fähig und lädt Updates beim nächsten Öffnen (RB-03).
 registerSW({ immediate: true })
@@ -14,6 +14,6 @@ void navigator.storage?.persist?.()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <Root />
   </StrictMode>,
 )

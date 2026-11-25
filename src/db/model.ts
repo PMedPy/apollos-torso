@@ -152,4 +152,6 @@ export interface Settings {
   decayTauDays?: number
   /** Standard-Wechselpause in Sekunden (PZ-04); null = offene Stoppuhr */
   transitionRestSec?: number | null
+  /** Schrittweite der Gewichts-Regler in kg (TR-04d) */
+  weightStepKg?: number
 }

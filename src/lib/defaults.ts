@@ -15,4 +15,9 @@ export const DEFAULTS = {
   restPresetsSec: [45, 60, 90, 120] as const,
   /** PZ-04 – Standard-Wechselpause; null = offene Stoppuhr */
   transitionRestSec: null as number | null,
+  /** TR-04d – Schrittweite der Gewichts-Regler */
+  weightStepKg: 2.5,
+  /** TR-04c – Startwerte ohne Historie */
+  firstReps: 8,
+  firstWeightKg: 50,
 } as const
