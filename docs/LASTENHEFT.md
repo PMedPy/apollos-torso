@@ -4,7 +4,7 @@
 |---|---|
 | **Projekt** | ApollosTorso — übungszentrierte Fitness-Tracking-App |
 | **Repo / URL** | `apollos-torso` |
-| **Version** | 1.3 (Baseline) |
+| **Version** | 1.4 (Baseline) |
 | **Stand** | 23.11.2026 |
 | **Auftraggeber, Orchestrierung, User-Tests** | Paul Medebach |
 | **Implementierung** | Claude |
@@ -193,14 +193,22 @@ Einstellungen { sprache, theme, deloadFaktor, tau, fokusStärken, standardWechse
 | TR-01 | Training starten per **One-Click** (freies Training) über das blaugrüne „+“. | P1 |
 | TR-02 | Training starten per **Template**. | P2 |
 | TR-03 | **Schrotflinten-Prinzip:** In der Pause zwischen zwei Übungen wird die nächste Übung **geladen** (ausgewählt). Mit dem Start ihres ersten Satzes wird sie **abgefeuert**. Mit Template ist die nächste Übung automatisch geladen, ohne Template schlägt der Algorithmus eine vor (ab P5). | P1 |
-| TR-04 | Pro Satz: Tap auf **Start**, Tap auf **Fertig**, dann Wiederholungen bzw. Sekunden und gegebenenfalls Gewicht eintragen. Gewicht und Wiederholungen des letzten Satzes werden vorausgefüllt. | P1 |
+| TR-04 | Pro Satz: Tap auf **Start**, Tap auf **Fertig**. Danach fährt ein **Eingabeblatt** von unten hoch mit Plus/Minus-Reglern für **Gewicht** und **Wiederholungen** (bzw. Haltezeit). Ein Tap auf die Zahl öffnet die Tastatur. „Speichern“ speichert den Satz und startet direkt die Pause. | P1 |
+| TR-04a | Das Feld heißt immer **„Gewicht“**, auch bei Körpergewichtsübungen (dort ist das zusätzliche Gewicht gemeint, z.B. ein Dip-Gürtel). | P1 |
+| TR-04b | **Standardwerte Satz für Satz:** Satz n übernimmt Gewicht **und** Wiederholungen von Satz n derselben Übung im letzten Training, in dem sie vorkam. Beispiel: letztes Mal 10 × 60 kg, 12 × 56 kg, 8 × 56 kg → heute sind Satz 1 bis 3 genau so vorausgefüllt. Hat das heutige Training mehr Sätze als das letzte, übernimmt der zusätzliche Satz die Werte des vorherigen Satzes von heute. Aufwärmsätze werden dabei mitgezählt, damit die Reihenfolge stimmt. | P1 |
+| TR-04c | **Ohne Historie** (Übung wurde noch nie ausgeführt): **8 Wiederholungen**, **50 kg** bei Gewichtsübungen, 0 kg bei Körpergewichtsübungen. Bei isometrischen Übungen ist der Standard immer die gestoppte Zeit zwischen Start und Fertig. Das Ziel (TR-06, ab P2) wird nur angezeigt und füllt das Eingabeblatt nicht vor. | P1 |
+| TR-04d | Gewichtsschritte der Plus/Minus-Regler: Standard 2,5 kg, in den Einstellungen änderbar. | P1 |
+| TR-04e | Die App **empfiehlt kein höheres Gewicht** zur Progression. Das Ziel ist immer eine Wiederholungszahl beim gewählten Gewicht. Eine Gewichtsempfehlung kommt höchstens später als erweiterte Option (EI-08). | P1 |
 | TR-05 | Bei isometrischen Übungen läuft zwischen Start und Fertig eine sichtbare Stoppuhr. Die Haltezeit ergibt sich daraus und ist korrigierbar. | P1 |
 | TR-06 | Pro Übung werden während des Trainings angezeigt: **Bestwert** und die **nötigen Wiederholungen bzw. die nötige Zeit**, um ihn zu schlagen (FORMELN.md, A.2 und A.9). | P2 |
 | TR-07 | **Deload-Slider pro Übung:** normaler Bestwert oder Deload. Im Deload-Modus wird das Ziel mit dem Deload-Faktor multipliziert (A.10). Sätze werden als Deload markiert. | P2 |
 | TR-08 | Am Ende des Trainings: Frage „Wie war das Training?“ mit Bewertung von **1 bis 10**. | P1 |
 | TR-09 | Ein laufendes Training übersteht das Schließen der App und einen Neustart des Handys (sofortige Speicherung jedes Satzes). | P1 |
-| TR-10 | Sätze können nachträglich korrigiert oder gelöscht werden. | P1 |
-| TR-11 | **Layout der Trainingsseite:** offen (siehe Kapitel 12). | P1 |
+| TR-10 | Sätze können nachträglich korrigiert oder gelöscht werden, über eine aufklappbare Zeile mit den heutigen Sätzen der Übung. | P1 |
+| TR-11 | **Layout der Trainingsseite:** eine Übung im **Vollbild** (Skizze A): Übungsname, Ziel groß in der Mitte, Satz-Punkte, darunter Pausen-Chip und großer Start-Button. Keine Reizüberflutung. | P1 |
+| TR-11a | **Pausenansicht** (Skizze C): Pausenuhr in der Mitte. Zwischen zwei Übungen ist unten die nächste Übung **geladen** (änderbar), ein Tap auf „Abfeuern“ startet ihren ersten Satz. | P1 |
+| TR-12 | **Trainingsansicht per kräftigem Ziehen** nach oben/unten: zeigt das ganze Training (bisherige Übungen, Pausen, bei Template auch kommende) zum Auswählen. Die Seite wird ab P1 als Stapel aus Ebenen aufgebaut, damit die Geste später ohne Umbau dazukommt. | später (P4/P5) |
+| TR-13 | **Aufwärmsätze** werden im Eingabeblatt mit einem kleinen **Raketensymbol** markiert. Sie zählen nicht für Bestwerte und nicht für „Sätze pro Muskelgruppe“, erscheinen aber im Verlauf und in der Zeitstatistik. | P1 |
 
 ### 6.4 Pausen & Zeit-Tracking (PZ)
 
@@ -226,9 +234,9 @@ Einstellungen { sprache, theme, deloadFaktor, tau, fokusStärken, standardWechse
 | ME-07 | **Ermüdungsfaktor:** Leistungen werden auf „ausgeruht“ hochgerechnet, abhängig von systemischer Vorbelastung (alle Sätze vorher) und lokaler Vorbelastung (Sätze vorher auf denselben Muskelgruppen) (A.6). Der Faktor wird nach oben begrenzt. | P3 (Platzhalter), P5 (geschätzt) |
 | ME-08 | Die Parameter a und b des Ermüdungsfaktors werden in Phase 5 **aus den eigenen Daten geschätzt** (A.7), gemeinsam über alle Übungen. | P5 |
 | ME-09 | **Live-Ziel:** Während des Trainings wird das Ziel auf den aktuellen Ermüdungszustand zurückgerechnet (A.8). Gespeichert und verglichen wird auf der „frischen“ Skala, angezeigt auf der „jetzigen“. | P5 |
-| ME-10 | Die Ermüdungsbereinigung gilt für Bestwerte, Top-Übungsmetrik und Progressionskurven. **Nicht** für Volumen, Sätze pro Muskelgruppe und Zeitstatistiken. | P3 |
+| ME-10 | Die Ermüdungsbereinigung gilt für Bestwerte, Top-Übungsmetrik und Progressionskurven. **Nicht** für Volumen, Sätze pro Muskelgruppe und Zeitstatistiken. Aufwärmsätze zählen für die Vorbelastung S mit, weil sie real ermüden. | P3 |
 | ME-11 | **Top-Übungsmetrik:** Leistung im heutigen Training gegenüber dem Mittel der letzten 3 Trainings mit dieser Übung, als Prozent mit Pfeil (hoch/gleich/runter) (A.11). | P3 |
-| ME-12 | **Sätze pro Muskelgruppe pro Woche** (A.12). | P3 |
+| ME-12 | **Sätze pro Muskelgruppe pro Woche** (A.12), ohne Aufwärmsätze (TR-13). | P3 |
 
 ### 6.6 Belvedere — Statistik (ST)
 
@@ -279,6 +287,18 @@ Einstellungen { sprache, theme, deloadFaktor, tau, fokusStärken, standardWechse
 | EI-05 | **Erweiterte Einstellungen:** Deload-Faktor (0–1), Zerfallskonstante τ, Fokus-Stärken β_M und β_T, Standard-Wechselpause. | P2 / P5 |
 | EI-06 | Einstellungen zurücksetzen. | P1 |
 | EI-07 | Datenbank zurücksetzen (mit Sicherheitsabfrage und Export-Angebot vorher). | P1 |
+| EI-08 | **Gewichts-Progressionsempfehlung** (erweiterte Option, standardmäßig aus): Die App schlägt vor, wann das Gewicht erhöht werden sollte. | später |
+
+### 6.10a Profile (PF) — vorübergehend
+
+Für die Testphase können zwei Personen auf einem Gerät getrennt loggen. Das Feature wird später wieder entfernt.
+
+| ID | Anforderung | Phase |
+|---|---|---|
+| PF-01 | Beim Start wählt man eines von zwei Profilen: **Süßbär** oder **Ostnase**. Das zuletzt gewählte ist vorausgewählt. | P1 |
+| PF-02 | Jedes Profil hat eine **eigene Datenbank** auf dem Gerät (`apollos-torso-<profil>`), also getrennte Daten, Einstellungen, Statistiken und Exporte. Das Datenmodell bekommt dafür kein Benutzer-Feld. | P1 |
+| PF-03 | Profilwechsel über die Einstellungen, nicht während eines laufenden Trainings. | P1 |
+| PF-04 | **Entfernen:** Die Profilauswahl wird abgeschaltet, die App öffnet dann direkt ein festgelegtes Profil. Die Daten bleiben erhalten. | später |
 
 ### 6.11 Rilke & Easter Eggs (EE)
 
@@ -333,7 +353,7 @@ Die Formeln sind nach [`FORMELN.md`](FORMELN.md) ausgelagert, damit es nur eine 
 | Phase | Inhalt | Abnahmekriterium | Version |
 |---|---|---|---|
 | **P0 Fundament** | Repo, Grundgerüst (React/TS/Vite), PWA, Cloudflare-Deployment, vollständiges Datenmodell, i18n-Gerüst, Farbwerte, Darkmode, Test-Setup (Vitest, CI) | Die leere App lässt sich auf Android und iOS installieren und offline öffnen. | v0.0 |
-| **P1 Loggen im Gym (MVP)** | Onboarding mit Körpergewicht, Übungskatalog + Suche, eigene Übungen, freies Training, Schrotflinte, Start/Fertig pro Satz, Pausen (einfaches Dropdown, Timer/Stoppuhr), Zeit-Tracking, Bewertung, Trainingsverlauf, Export/Import, statische Menüleiste | Paul und seine Freundin nutzen die App im Gym statt Notizen. **Ab hier werden echte Daten gesammelt.** | v0.1 |
+| **P1 Loggen im Gym (MVP)** | Profilwahl (PF), Onboarding mit Körpergewicht, Übungskatalog + Suche, eigene Übungen, freies Training, Schrotflinte, Start/Fertig pro Satz, Pausen (einfaches Dropdown, Timer/Stoppuhr), Zeit-Tracking, Bewertung, Trainingsverlauf, Export/Import, statische Menüleiste | Paul und seine Freundin nutzen die App im Gym statt Notizen. **Ab hier werden echte Daten gesammelt.** | v0.1 |
 | **P2 Bestwerte & Templates** | e1RM, effektive Last, Allzeit- und aktueller Bestwert, nötige Wiederholungen, Deload-Slider, Satzpause pro Übung merken, Templates (aus Training, neu) | Bestwerte und Ziele werden im Training korrekt angezeigt. | v0.2 |
 | **P3 Belvedere** | Statistikseite mit Übungs-, Trainings- und Verlaufsebene, Zeitstatistik, Sätze pro Muskelgruppe, Top-Übungsmetrik, Ermüdungsfaktor mit Platzhaltern, Torso-Icon | Fortschritt ist über alle Ebenen nachvollziehbar. | v0.3 |
 | **P4 Design & Animation** | Bubble-Menüleiste, Bubble-Dropdowns mit Gravitation, körnige Flächen, Darkmode-Feinschliff, Rilke (Onboarding, Splash, Easter Egg), Icons | Die App fühlt sich so an wie in Kapitel 7 beschrieben. | v0.4 |
@@ -425,9 +445,9 @@ Cloudflare baut und deployt automatisch bei jedem Push. Lokal braucht man die Be
 
 | # | Punkt | Bis |
 |---|---|---|
-| O-1 | **Layout der Trainingsseite:** eine Übung im Vollbild zum Wischen oder eine scrollbare Liste aller Übungen? | vor P1 |
-| O-2 | **Datenhaltung:** Ursprünglich „nur ein Jahr“. Vorschlag: alles behalten, Statistiken standardmäßig auf das letzte Jahr begrenzen. | vor P1 |
-| O-3 | **Aufwärmsätze:** Sollen sie markierbar sein und aus Bestwerten und Sätzen pro Muskelgruppe herausfallen? | vor P1 |
+| ~~O-1~~ | **Entschieden 25.11.:** Vollbild-Übung plus Pausenansicht mit Laden (TR-11, TR-11a), Trainingsansicht später (TR-12). | — |
+| ~~O-2~~ | **Entschieden 25.11.:** Alle Daten werden behalten. Statistiken zeigen standardmäßig das letzte Jahr. | — |
+| ~~O-3~~ | **Entschieden 25.11.:** Markierbar mit Raketensymbol, zählen nicht für Bestwerte und Sätze pro Muskelgruppe (TR-13). | — |
 | O-4 | **Isometrische Metriken:** Reicht „längste Haltezeit bei gleicher Last“ (A.9), oder braucht es eine kombinierte Kennzahl? | vor P2 |
 | O-5 | **Startwerte** für d, τ, a, b, F_max, T, β_M, β_T, κ. | P2 / P3 / P5 |
 | O-6 | **Trainingsmetrik, Wochen- und Monatsmetrik** genauer definieren. | vor P3 |
@@ -444,3 +464,4 @@ Cloudflare baut und deployt automatisch bei jedem Push. Lokal braucht man die Be
 | 1.1 | 23.11.2026 | Git-Rolle: Paul führt alle Git-Befehle aus (11.2, 11.6). Lokale npm-Skripte ergänzt (11.8). |
 | 1.2 | 23.11.2026 | Ins Repo übernommen (`docs/LASTENHEFT.md`). Anhang A nach `docs/FORMELN.md` ausgelagert. Glossar Code ↔ Lastenheft (3.1). Feld „Aufwärmsatz“ im Datenmodell ergänzt (Behandlung weiter offen, O-3). |
 | 1.3 | 23.11.2026 | Akzentfarben festgelegt: Standard `#8F473D`, Fokus-Modus `#1400F2` (DS-02, FO-02). |
+| 1.4 | 25.11.2026 | O-1 bis O-3 entschieden. Eingabeblatt mit Standardwerten Satz für Satz aus dem letzten Training, ohne Historie 8 Wdh / 50 kg (TR-04a–e), Layout der Trainingsseite (TR-11, TR-11a), Trainingsansicht später (TR-12), Aufwärmsätze (TR-13). Keine Gewichtsempfehlung, später optional (EI-08). Vorübergehende Profile Süßbär/Ostnase (PF-01–04). |
