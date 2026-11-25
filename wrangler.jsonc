@@ -4,6 +4,14 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "apollos-torso",
   "compatibility_date": "2026-11-01",
+  // Produktion unter apollos-torso.<subdomain>.workers.dev
+  "workers_dev": true,
+  // Eigene Test-URL pro Branch (Lastenheft 11.1)
+  "preview_urls": true,
+  // Pflicht für `npx wrangler preview` (Deploy-Befehl für Nicht-Produktions-Branches).
+  // Leer, weil die App keine Bindings oder Umgebungsvariablen hat.
+  // Doku: https://developers.cloudflare.com/workers/previews/configuration/
+  "previews": {},
   "assets": {
     "directory": "./dist",
     // Unbekannte Pfade liefern index.html aus (Single-Page-App).
